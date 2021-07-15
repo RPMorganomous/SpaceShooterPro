@@ -11,9 +11,15 @@ public class Enemy : MonoBehaviour
 
     private Animator _anim;
 
-    //[SerializeField]
-    //private GameObject _explosionPreFab;
     private AudioSource _audioSource;
+
+    private bool _stopFiring = false;
+
+    [SerializeField]
+    private GameObject _enemyLaserPrefab;
+
+    private float _fireRate = 3.0f;
+    private float _canFire = -1.0f;
 
     void Start()
     {
@@ -31,21 +37,53 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("The Animator is NULL");
         }
+
+        //StartCoroutine(FireEnemyLaser());
     }
 
     void Update()
     {
 
+        Calculatemovement();
+
+        if (Time.time > _canFire)
+        {
+            //FireEnemyLaser();
+            _fireRate = Random.Range(3f, 7f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(
+                _enemyLaserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for(int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+                lasers[i].tag = "EnemyLaser";
+            }
+
+        }
+
+    }
+
+    void Calculatemovement()
+    {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if (transform.position.y < -3.8f) 
+        if (transform.position.y < -3.8f)
         {
             float randomX = Random.Range(-8f, 9f);
             transform.position =
                 new Vector3(randomX, 7f, 0);
-
         }
     }
+
+    private void FireEnemyLaser()
+    {
+        _canFire = Time.time + _fireRate;
+
+        Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -88,4 +126,15 @@ public class Enemy : MonoBehaviour
             
         }
     }
+    //private void FireEnemyLaser()
+    //{
+    //    //yield return new WaitForSeconds(3.0f);
+    //    while (_stopFiring == false)
+    //    {
+    //        //fire laser
+    //        Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+    //        //_audioSource.Play();
+    //        yield return new WaitForSeconds(Random.Range(3f, 8f));
+    //    }
+    //}
 }

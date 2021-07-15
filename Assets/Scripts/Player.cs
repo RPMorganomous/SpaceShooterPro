@@ -18,8 +18,11 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioClip _laserSound;
+    [SerializeField]
+    private AudioClip _laserHitPlayerSound;
 
     private AudioSource _audioSource;
+    private AudioSource _explosion;
 
     [SerializeField]
     private Vector3 offset = new Vector3(0, 0.8f, 0);
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
 
+
         if (_audioSource == null)
         {
             Debug.LogError("The Audio Source on the player is NULL");
@@ -97,6 +101,7 @@ public class Player : MonoBehaviour
         {
             Instantiate(_tripleShot, transform.position, Quaternion.identity);
             _audioSource.Play();
+
         }
         else
         {
@@ -200,7 +205,7 @@ public class Player : MonoBehaviour
             Debug.Log("TS OFF");
             TripleShotActive();
         }
-    } //what this is
+    } 
 
     public void SpeedBoostActive()
     {
@@ -248,6 +253,18 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Hit by " + other.tag);
+
+        if (other.tag == "EnemyLaser")
+        {
+            //_laserHitPlayerSound.Play();
+            Destroy(other.gameObject);
+            Damage();
+        }
     }
 
 }
