@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
+    private float _speedHigh = 7f;
+    [SerializeField]
+    private float _speedLow = 3.5f;
+
+    [SerializeField]
     private float _speedMultiplier = 2;
 
     [SerializeField]
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
-
+        //_speed = _speedLow;
 
         if (_audioSource == null)
         {
@@ -85,6 +90,17 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _speed = _speedHigh;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _speed = _speedLow;
+        }
+
+
         CalculateMovement();
 
         if (Input.GetKeyDown("space") && Time.time > _canFire)
@@ -142,6 +158,9 @@ public class Player : MonoBehaviour
             transform.position
                 = new Vector3(11, transform.position.y, 0);
         }
+
+
+
     }
 
     public void Damage()
