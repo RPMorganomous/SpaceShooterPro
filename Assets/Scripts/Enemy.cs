@@ -104,7 +104,6 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _canFire = 10;
 
-            //bugfix
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
         }
@@ -122,21 +121,10 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _canFire = 10;
-            //bugfix
+
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
             
         }
     }
-    //private void FireEnemyLaser()
-    //{
-    //    //yield return new WaitForSeconds(3.0f);
-    //    while (_stopFiring == false)
-    //    {
-    //        //fire laser
-    //        Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
-    //        //_audioSource.Play();
-    //        yield return new WaitForSeconds(Random.Range(3f, 8f));
-    //    }
-    //}
 }

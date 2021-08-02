@@ -254,17 +254,4 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
     }
-
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    Debug.Log("Hit by " + other.tag);
-
-    //    if (other.tag == "EnemyLaser")
-    //    {
-    //        //_laserHitPlayerSound.Play();
-    //        Destroy(other.gameObject);
-    //        Damage();
-    //    }
-    //}
-
 }
