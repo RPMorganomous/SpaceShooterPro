@@ -51,6 +51,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shieldVisualizer;
+    private Material _shieldRenderer;
+    private Color _shieldColor;
+    private int _shieldLevel = 3;
 
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
@@ -66,7 +69,8 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
-        //_speed = _speedLow;
+        _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
+        _shieldRenderer.SetColor("_Color", Color.white);
 
         if (_audioSource == null)
         {
@@ -165,11 +169,30 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_shieldsActive == true)
+        if (_shieldsActive == true )
         {
-            _shieldsActive = false;
-            _shieldVisualizer.SetActive(false);
+            _shieldLevel--;
+            switch (_shieldLevel)
+            {
+                case 0:
+                    _shieldsActive = false;
+                    _shieldVisualizer.SetActive(false);
+                    break;
+
+                case 1:
+                    _shieldRenderer.SetColor("_Color", Color.red);
+                    break;
+
+                case 2:
+                    _shieldRenderer.SetColor("_Color", Color.grey);
+                    break;
+            }
+
             return;  
+        }
+        else
+        {
+
         }
 
         _lives--;
@@ -259,12 +282,18 @@ public class Player : MonoBehaviour
     {
         if (_shieldsActive == false)
         {
+            _shieldLevel = 3;
             _shieldsActive = true;
+            _shieldRenderer.SetColor("_Color", Color.white);
             _shieldVisualizer.SetActive(true);
         }
         else
         {
-            //could add a shield multiplier here?
+            _shieldLevel = 3;
+            _shieldsActive = true;
+            _shieldRenderer.SetColor("_Color", Color.white);
+            _shieldVisualizer.SetActive(true);
+
         }
     }
 
