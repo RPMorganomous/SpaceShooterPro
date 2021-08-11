@@ -280,21 +280,10 @@ public class Player : MonoBehaviour
 
     public void ShieldsActive()
     {
-        if (_shieldsActive == false)
-        {
             _shieldLevel = 3;
             _shieldsActive = true;
             _shieldRenderer.SetColor("_Color", Color.white);
             _shieldVisualizer.SetActive(true);
-        }
-        else
-        {
-            _shieldLevel = 3;
-            _shieldsActive = true;
-            _shieldRenderer.SetColor("_Color", Color.white);
-            _shieldVisualizer.SetActive(true);
-
-        }
     }
 
     public void AddScore(int points)
