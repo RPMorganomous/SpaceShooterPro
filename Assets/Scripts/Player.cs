@@ -24,10 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _laserSound;
     [SerializeField]
+    private AudioClip _outOfAmmoSound;
+    [SerializeField]
     private AudioClip _laserHitPlayerSound;
 
     private AudioSource _audioSource;
-    private AudioSource _explosion;
 
     [SerializeField]
     private Vector3 offset = new Vector3(0, 0.8f, 0);
@@ -52,7 +53,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldVisualizer;
     private Material _shieldRenderer;
-    private Color _shieldColor;
     private int _shieldLevel = 3;
 
     [SerializeField]
@@ -63,12 +63,16 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
+    //[SerializeField]
+    private int _ammo = 15;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _outOfAmmoSound = GetComponent<Player>()._outOfAmmoSound;
         _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
         _shieldRenderer.SetColor("_Color", Color.white);
 
@@ -115,17 +119,27 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        _canFire = Time.time + _fireRate;
-
-        if (_tripleShotActive == true)
+        if (_ammo > 0)
         {
-            Instantiate(_tripleShot, transform.position, Quaternion.identity);
-            _audioSource.Play();
+            _canFire = Time.time + _fireRate;
 
+            if (_tripleShotActive == true)
+            {
+                Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                _audioSource.Play();
+                    _ammo--;
+
+            }
+            else
+            {
+                Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+                _audioSource.Play();
+                    _ammo--;
+            }
         }
         else
         {
-            Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+            _audioSource.clip = _outOfAmmoSound;
             _audioSource.Play();
         }
     }
