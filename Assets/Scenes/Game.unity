@@ -238,10 +238,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3.5
+  _speedHigh: 7
+  _speedLow: 3.5
   _speedMultiplier: 2
   _laserPrefab: {fileID: 7644306946231700752, guid: 6ed0e6bc374ce04448f0d2be0ae1c523, type: 3}
   _tripleShot: {fileID: 1021295220603585572, guid: 8a3d56bf361798e4c9d189a599599a6d, type: 3}
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _outOfAmmoSound: {fileID: 8300000, guid: d8c4bd118e8d76b41b63884edf9b2178, type: 3}
   _laserHitPlayerSound: {fileID: 0}
   offset: {x: 0, y: 0.8, z: 0}
   _fireRate: 0.15
