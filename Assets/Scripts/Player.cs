@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     private AudioClip _laserHitPlayerSound;
 
     private AudioSource _audioSource;
-
+    
     [SerializeField]
     private Vector3 offset = new Vector3(0, 0.8f, 0);
 
@@ -144,6 +144,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void LaserRecharge()
+    {
+        _ammo += 15;
+        _audioSource.clip = _laserSound;
+    }
+
     void CalculateMovement()
     {
         float horizontalInput =
@@ -241,7 +247,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            lastRunnerTripleShot = lastRunnerTripleShot + 1;
+            lastRunnerTripleShot++;
             Debug.Log("lastRunner = " + lastRunnerTripleShot);
         }
     }
@@ -256,7 +262,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            lastRunnerTripleShot = lastRunnerTripleShot - 1;
+            lastRunnerTripleShot--;
             _tripleShotActive = false;
             Debug.Log("TS OFF");
             TripleShotActive();
@@ -272,7 +278,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            lastRunnerSpeedBoost = lastRunnerSpeedBoost + 1;
+            lastRunnerSpeedBoost++;
         }
     }
 
@@ -285,7 +291,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            lastRunnerSpeedBoost = lastRunnerSpeedBoost - 1;
+            lastRunnerSpeedBoost--;
             _speedBoostActive = false;
             SpeedBoostActive();
         }

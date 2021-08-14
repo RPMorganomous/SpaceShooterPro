@@ -5,9 +5,9 @@ using UnityEngine;
 public class Powerup : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3.0f;
+    private float _speed = 3;
 
-    [SerializeField] //0=TripleShot 1=Speed 2=Shields
+    [SerializeField] //0=TripleShot 1=Speed 2=Shields 3=LaserRecharge
     private int powerupID;
 
     [SerializeField]
@@ -45,6 +45,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case 2:
                         player.ShieldsActive();
+                        break;
+                    case 3:
+                        player.LaserRecharge();
                         break;
                 }
 
