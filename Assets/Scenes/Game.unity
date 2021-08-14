@@ -245,7 +245,7 @@ MonoBehaviour:
   _tripleShot: {fileID: 1021295220603585572, guid: 8a3d56bf361798e4c9d189a599599a6d, type: 3}
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _outOfAmmoSound: {fileID: 8300000, guid: d8c4bd118e8d76b41b63884edf9b2178, type: 3}
-  _laserHitPlayerSound: {fileID: 0}
+  _laserHitPlayerSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   offset: {x: 0, y: 0.8, z: 0}
   _fireRate: 0.15
   _lives: 3
@@ -1684,6 +1684,7 @@ MonoBehaviour:
   - {fileID: 8593998366597862330, guid: e53fb7c2199e0c04a813041218723a40, type: 3}
   - {fileID: 5168845659623978630, guid: 5043d3c421d433e4fb7a6c1718cc0ca0, type: 3}
   - {fileID: 5541005514105312783, guid: 7caf7657d4488fb49b0d1b56fd2a995c, type: 3}
+  - {fileID: 4438544685001196572, guid: 5d74c1168b61e4748948c6a71d71b8e6, type: 3}
 --- !u!4 &1701851607
 Transform:
   m_ObjectHideFlags: 0

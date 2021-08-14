@@ -49,7 +49,7 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
-            int randomPowerUp = Random.Range(0, 4);
+            int randomPowerUp = Random.Range(0, 5);
 
             GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
                                                 posToSpawn,

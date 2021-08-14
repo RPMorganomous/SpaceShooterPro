@@ -49,6 +49,9 @@ public class Powerup : MonoBehaviour
                     case 3:
                         player.LaserRecharge();
                         break;
+                    case 4:
+                        player.HealthPowerup();
+                        break;
                 }
 
             }

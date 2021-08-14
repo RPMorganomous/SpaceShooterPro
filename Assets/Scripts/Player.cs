@@ -150,6 +150,8 @@ public class Player : MonoBehaviour
         _audioSource.clip = _laserSound;
     }
 
+
+
     void CalculateMovement()
     {
         float horizontalInput =
@@ -233,9 +235,32 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
 
-        
+    public void HealthPowerup()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
 
+            switch (_lives)
+            {
+                case 3:
+                    _rightEngine.SetActive(false);
+                    _leftEngine.SetActive(false);
+                    break;
+                case 2:
+                    _rightEngine.SetActive(true);
+                    _leftEngine.SetActive(false);
+                    break;
+                case 1:
+                    _rightEngine.SetActive(true);
+                    _leftEngine.SetActive(true);
+                    break;
+            }
+
+            _uiManager.UpdateLives(_lives);
+        }
     }
 
     public void TripleShotActive()
