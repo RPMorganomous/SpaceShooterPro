@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     private GameObject _tripleShot;
 
     [SerializeField]
+    private GameObject _blackHole;
+
+    [SerializeField]
     private AudioClip _laserSound;
     [SerializeField]
     private AudioClip _outOfAmmoSound;
@@ -44,6 +47,8 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
     private bool _speedBoostActive = false;
     private bool _shieldsActive = false;
+    private bool _blackHoleActive = false;
+    public static bool BlackHoleIsOn = false;
 
     private SpawnManager _spawnManager;
 
@@ -63,8 +68,13 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
-    //[SerializeField]
     private int _ammo = 15;
+
+    public static Action onBlackHoleAction;
+
+    public static Func<Vector3, int> onBlackHoleFunc;
+
+    private GameObject BlackHoleOnScreen;
 
     void Start()
     {
@@ -115,6 +125,21 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (_blackHoleActive == true & BlackHoleIsOn == false)
+            {
+
+                if(onBlackHoleAction != null)
+                {
+                    BlackHoleOnScreen = Instantiate(_blackHole, new Vector3(0, 3, 0), Quaternion.identity);
+                    onBlackHoleAction();
+                    BlackHoleIsOn = true;
+                }
+                StartCoroutine(BlackHolePowerDownRoutine());
+            }
+        }
     }
 
     private void FireLaser()
@@ -144,13 +169,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void BlackholePowerup()
+    {
+        _blackHoleActive = true;
+        
+    }
+
     public void LaserRecharge()
     {
         _ammo += 15;
         _audioSource.clip = _laserSound;
     }
-
-
 
     void CalculateMovement()
     {
@@ -321,6 +350,18 @@ public class Player : MonoBehaviour
             SpeedBoostActive();
         }
         
+    }
+
+    IEnumerator BlackHolePowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        Destroy(BlackHoleOnScreen);
+        _blackHoleActive = false;
+        BlackHoleIsOn = false;
+        if (onBlackHoleAction != null)
+        {
+            onBlackHoleAction();
+        }
     }
 
     public void ShieldsActive()

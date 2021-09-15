@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
     private float _canFire = -1.0f;
 
+    private Vector3 direction = Vector3.down;
+
+    private bool BlackHoleIsOnNow = false;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -37,8 +42,37 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("The Animator is NULL");
         }
+        if (Player.BlackHoleIsOn == true)
+        {
+            _speed = .5f;
+            direction = new Vector3(0, 3, 0) - transform.position;
+        }
 
-        //StartCoroutine(FireEnemyLaser());
+
+    }
+
+    private void Awake()
+    {
+        Player.onBlackHoleAction += BlackHole;
+    }
+
+    public void BlackHole()
+    {
+        Debug.Log("BlackHole was called");
+        if (BlackHoleIsOnNow == false)
+        {
+            BlackHoleIsOnNow = true;
+        }
+        else 
+        {
+            BlackHoleIsOnNow = false;
+        }
+
+    }
+
+    private void OnDestroy()
+    {
+        Player.onBlackHoleAction -= BlackHole;
     }
 
     void Update()
@@ -49,7 +83,7 @@ public class Enemy : MonoBehaviour
         if (Time.time > _canFire)
         {
             //FireEnemyLaser();
-            _fireRate = Random.Range(3f, 7f);
+            _fireRate = UnityEngine.Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(
                 _enemyLaserPrefab, transform.position, Quaternion.identity);
@@ -67,11 +101,17 @@ public class Enemy : MonoBehaviour
 
     void Calculatemovement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (BlackHoleIsOnNow == true)
+        {
+            _speed = .5f;
+            direction = new Vector3(0, 3, 0) - transform.position;
+        }
+
+        transform.Translate(direction * _speed * Time.deltaTime);
 
         if (transform.position.y < -3.8f)
         {
-            float randomX = Random.Range(-8f, 9f);
+            float randomX = UnityEngine.Random.Range(-8f, 9f);
             transform.position =
                 new Vector3(randomX, 7f, 0);
         }
@@ -126,5 +166,23 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2.8f);
             
         }
+
+        if (other.tag == "BlackHole")
+        {
+            if (_player != null)
+            {
+                _player.AddScore(10);
+            }
+
+            _audioSource.Play();
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            _canFire = 10;
+
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.8f);
+
+        }
+
     }
 }

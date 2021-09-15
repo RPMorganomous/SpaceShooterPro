@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,7 +51,12 @@ public class Powerup : MonoBehaviour
                         player.LaserRecharge();
                         break;
                     case 4:
+                        Debug.Log("HealthPowerup 1.0");
                         player.HealthPowerup();
+                        break;
+                    case 5:
+                        Debug.Log("blackHoleActive 1.0");
+                        player.BlackholePowerup();
                         break;
                 }
 
