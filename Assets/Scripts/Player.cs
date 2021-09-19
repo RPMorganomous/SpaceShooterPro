@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
     private AudioClip _laserHitPlayerSound;
 
     private AudioSource _audioSource;
-    
+
     [SerializeField]
     private Vector3 offset = new Vector3(0, 0.8f, 0);
 
@@ -76,6 +77,14 @@ public class Player : MonoBehaviour
 
     private GameObject BlackHoleOnScreen;
 
+    bool shiftBoost = false;
+    float shiftBoostPower = 100;
+    public Image BoostPower;
+
+    public Image[] _thrusterPoints;
+
+    private Shake shake;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -85,6 +94,9 @@ public class Player : MonoBehaviour
         _outOfAmmoSound = GetComponent<Player>()._outOfAmmoSound;
         _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
         _shieldRenderer.SetColor("_Color", Color.white);
+        shake = GameObject.FindGameObjectWithTag("ScreenShake").GetComponent<Shake>();
+
+        shiftBoostPower = 100f;
 
         if (_audioSource == null)
         {
@@ -110,14 +122,20 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed = _speedHigh;
+                _speed = _speedHigh;
+                shiftBoost = true;
+         
+            StartCoroutine(SpeedShiftPowerDownRoutine());
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _speed = _speedLow;
+            shiftBoost = false;
+            StartCoroutine(SpeedShiftPowerUpRoutine());
         }
 
+        SpeedShiftBarFiller();
 
         CalculateMovement();
 
@@ -139,6 +157,30 @@ public class Player : MonoBehaviour
                 }
                 StartCoroutine(BlackHolePowerDownRoutine());
             }
+        }
+
+        ColorChanger();
+    }
+
+    bool DisplayThrusterPoint(float _thrustRemaining, int pointNumber)
+    {
+        return ((pointNumber * 10) >= _thrustRemaining);
+    }
+
+    void ColorChanger()
+    {
+        Color shiftBoosterColor = Color.Lerp(Color.red, Color.green, shiftBoostPower / 100);
+
+        BoostPower.color = shiftBoosterColor;
+    }
+
+    void SpeedShiftBarFiller()
+    {
+        BoostPower.fillAmount = shiftBoostPower / 100;
+
+        for (int i = 0; i < _thrusterPoints.Length; i++)
+        {
+            _thrusterPoints[i].enabled = !DisplayThrusterPoint(shiftBoostPower, i);
         }
     }
 
@@ -247,6 +289,7 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+        shake.CamShake();
 
         switch (_lives)
         {
@@ -348,6 +391,34 @@ public class Player : MonoBehaviour
             lastRunnerSpeedBoost--;
             _speedBoostActive = false;
             SpeedBoostActive();
+        }
+        
+    }
+
+    IEnumerator SpeedShiftPowerUpRoutine()
+    {
+        if (shiftBoost == false & shiftBoostPower < 100f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            shiftBoostPower += 1f;
+            Debug.Log("BoostPowerUp = " + shiftBoostPower);
+            StartCoroutine(SpeedShiftPowerUpRoutine());
+        }
+    }
+
+    IEnumerator SpeedShiftPowerDownRoutine()
+    {
+        if (shiftBoost == true & shiftBoostPower > 0f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            shiftBoostPower -= 1f;
+            Debug.Log("BoostPower = " + shiftBoostPower);
+            if (shiftBoostPower == 0f)
+            {
+                _speed = _speedLow;
+                shiftBoost = false;
+            }
+            StartCoroutine(SpeedShiftPowerDownRoutine());
         }
         
     }
