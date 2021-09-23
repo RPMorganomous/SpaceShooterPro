@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
         _outOfAmmoSound = GetComponent<Player>()._outOfAmmoSound;
         _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
         _shieldRenderer.SetColor("_Color", Color.white);
+
         shake = GameObject.FindGameObjectWithTag("ScreenShake").GetComponent<Shake>();
 
         shiftBoostPower = 100f;
@@ -401,7 +402,6 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(0.01f);
             shiftBoostPower += 1f;
-            Debug.Log("BoostPowerUp = " + shiftBoostPower);
             StartCoroutine(SpeedShiftPowerUpRoutine());
         }
     }
@@ -412,7 +412,6 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(0.01f);
             shiftBoostPower -= 1f;
-            Debug.Log("BoostPower = " + shiftBoostPower);
             if (shiftBoostPower == 0f)
             {
                 _speed = _speedLow;
