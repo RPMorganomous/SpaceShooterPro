@@ -3412,6 +3412,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 1954567773416893746, guid: a2d13e5dea47c8049b2c55b1d27de059, type: 3}
+  _enemyLefty: {fileID: 3729283678004807126, guid: 6da4981a078653f498b9724a977bb424, type: 3}
+  _enemyRighty: {fileID: 0}
   _enemyContainer: {fileID: 508373060}
   _powerupPrefab:
   - {fileID: 4785306617911666098, guid: a273d05ae9ea86e488c265638b5e6b9e, type: 3}
@@ -3420,6 +3422,7 @@ MonoBehaviour:
   - {fileID: 5541005514105312783, guid: 7caf7657d4488fb49b0d1b56fd2a995c, type: 3}
   - {fileID: 4438544685001196572, guid: 5d74c1168b61e4748948c6a71d71b8e6, type: 3}
   - {fileID: 8637486551196355069, guid: 80017c925a4732447863d98892cf1857, type: 3}
+  enemyType: StraightDown
 --- !u!4 &1701851607
 Transform:
   m_ObjectHideFlags: 0

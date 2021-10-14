@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyLefty : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 4.0f;
@@ -22,7 +21,7 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
     private float _canFire = -1.0f;
 
-    private Vector3 direction = Vector3.down;
+    private Vector3 direction = Vector3.left;
 
     private string enemyType;
 
@@ -31,11 +30,13 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        
+
+
         if (_player == null)
         {
             Debug.Log("The Player is NULL");
         }
+
 
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
@@ -64,10 +65,11 @@ public class Enemy : MonoBehaviour
         {
             BlackHoleIsOnNow = true;
         }
-        else 
+        else
         {
             BlackHoleIsOnNow = false;
         }
+
     }
 
     private void OnDestroy()
@@ -88,12 +90,14 @@ public class Enemy : MonoBehaviour
                 _enemyLaserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-            for(int i = 0; i < lasers.Length; i++)
+            for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].AssignEnemyLaser();
                 lasers[i].tag = "EnemyLaser";
             }
+
         }
+
     }
 
     void Calculatemovement()
@@ -110,7 +114,8 @@ public class Enemy : MonoBehaviour
         if (transform.position.y < -3.8f)
         {
             float randomX = UnityEngine.Random.Range(-8f, 9f);
-            transform.position = new Vector3(randomX, 7f, 0);
+            transform.position =
+                new Vector3(randomX, 7f, 0);
         }
         else if (transform.position.x > 10f)
         {
@@ -171,7 +176,7 @@ public class Enemy : MonoBehaviour
 
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
-            
+
         }
 
         if (other.tag == "BlackHole")
