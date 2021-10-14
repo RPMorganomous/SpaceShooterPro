@@ -28,9 +28,12 @@ public class Enemy : MonoBehaviour
 
     private bool BlackHoleIsOnNow = false;
 
+    private int _movementType;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _movementType = UnityEngine.Random.Range(0, 2);
         
         if (_player == null)
         {
@@ -103,6 +106,21 @@ public class Enemy : MonoBehaviour
         {
             _speed = .5f;
             direction = new Vector3(0, 3, 0) - transform.position;
+        }
+        else
+        {
+            switch (_movementType)
+            {
+                case 0: // zig zag
+                    direction = new Vector3(Mathf.Cos(Time.time * 3), -1, 0);
+                    break;
+                case 1: // circle
+                    direction = new Vector3(Mathf.Cos(Time.time), Mathf.Sin(Time.time), 0);
+                    break;
+                case 2: // down
+                    direction = Vector3.down;
+                    break;
+            }
         }
 
         transform.Translate(direction * _speed * Time.deltaTime);
