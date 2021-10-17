@@ -30,6 +30,13 @@ public class Enemy : MonoBehaviour
 
     private int _movementType;
 
+    [SerializeField]
+    private float _amplitude = 1;
+    [SerializeField]
+    private float _frequency = 1;
+
+    private bool pastHalf = false;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -102,6 +109,11 @@ public class Enemy : MonoBehaviour
     void Calculatemovement()
     {
 
+        if (transform.position.y < 0)
+        {
+            pastHalf = true;
+        }
+
         if (BlackHoleIsOnNow == true)
         {
             _speed = .5f;
@@ -115,7 +127,14 @@ public class Enemy : MonoBehaviour
                     direction = new Vector3(Mathf.Cos(Time.time * 3), -1, 0);
                     break;
                 case 1: // circle
-                    direction = new Vector3(Mathf.Cos(Time.time), Mathf.Sin(Time.time), 0);
+                    if (pastHalf == true)
+                    {
+                        direction = new Vector3(Mathf.Cos(Time.time * _frequency) * _amplitude, Mathf.Sin(Time.time * _frequency) * _amplitude, 0);
+                    }
+                    else
+                    {
+                        direction = Vector3.down;
+                    }
                     break;
                 case 2: // down
                     direction = Vector3.down;
@@ -124,22 +143,54 @@ public class Enemy : MonoBehaviour
         }
 
         transform.Translate(direction * _speed * Time.deltaTime);
+        if (_movementType == 1)
+        {
+            if (pastHalf == false)
+            {
+                if (transform.position.y < -3.8f)
+                {
+                    float randomX = UnityEngine.Random.Range(-8f, 9f);
+                    transform.position = new Vector3(randomX, 7f, 0);
+                }
+                else if (transform.position.x > 10f)
+                {
+                    float randomY = UnityEngine.Random.Range(0f, 6f);
+                    transform.position = new Vector3(-10, randomY, 0);
+                }
+                else if (transform.position.x < -10f)
+                {
+                    float randomY = UnityEngine.Random.Range(0f, 6f);
+                    transform.position = new Vector3(10, randomY, 0);
+                }
+            }
+            else if (transform.position.x > 10f)
+            {
+                transform.position = new Vector3(-10, transform.position.y, 0);
+            }
+            else if (transform.position.x < -10f)
+            {
+                transform.position = new Vector3(10, transform.position.y, 0);
+            }
+        }
+        else
+        {
+            if (transform.position.y < -3.8f)
+            {
+                float randomX = UnityEngine.Random.Range(-8f, 9f);
+                transform.position = new Vector3(randomX, 7f, 0);
+            }
+            else if (transform.position.x > 10f)
+            {
+                float randomY = UnityEngine.Random.Range(0f, 6f);
+                transform.position = new Vector3(-10, randomY, 0);
+            }
+            else if (transform.position.x < -10f)
+            {
+                float randomY = UnityEngine.Random.Range(0f, 6f);
+                transform.position = new Vector3(10, randomY, 0);
+            }
+        }
 
-        if (transform.position.y < -3.8f)
-        {
-            float randomX = UnityEngine.Random.Range(-8f, 9f);
-            transform.position = new Vector3(randomX, 7f, 0);
-        }
-        else if (transform.position.x > 10f)
-        {
-            float randomY = UnityEngine.Random.Range(0f, 6f);
-            transform.position = new Vector3(-10, randomY, 0);
-        }
-        else if (transform.position.x < -10f)
-        {
-            float randomY = UnityEngine.Random.Range(0f, 6f);
-            transform.position = new Vector3(10, randomY, 0);
-        }
     }
 
     private void FireEnemyLaser()
