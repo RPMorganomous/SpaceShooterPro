@@ -46,14 +46,14 @@ public class SpawnManager : MonoBehaviour
                 if (randomDirection > 89)
                 {
                     enemyType = "Lefty";
-                    Vector3 posToSpawn = new Vector3(-8f, Random.Range(0, 6), 0);
+                    Vector3 posToSpawn = new Vector3(10f, Random.Range(0, 6), 0);
                     GameObject newEnemy = Instantiate(_enemyLefty, posToSpawn, Quaternion.identity);
                     newEnemy.transform.parent = _enemyContainer.transform;
                 }
                 else
                 {
                     enemyType = "Righty";
-                    Vector3 posToSpawn = new Vector3(8f, Random.Range(0, 6), 0);
+                    Vector3 posToSpawn = new Vector3(-10f, Random.Range(0, 6), 0);
                     GameObject newEnemy = Instantiate(_enemyRighty, posToSpawn, Quaternion.identity);
                     newEnemy.transform.parent = _enemyContainer.transform;
                 }

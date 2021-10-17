@@ -27,6 +27,9 @@ public class EnemyLefty : MonoBehaviour
 
     private bool BlackHoleIsOnNow = false;
 
+    [SerializeField]
+    private GameObject _explosionPreFab;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -152,8 +155,8 @@ public class EnemyLefty : MonoBehaviour
             }
 
             _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
+            _anim.SetTrigger("OnLeftyDeath");
+            //_speed = 0;
             _canFire = 10;
 
             Destroy(GetComponent<Collider2D>());
@@ -170,8 +173,8 @@ public class EnemyLefty : MonoBehaviour
             }
 
             _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
+            _anim.SetTrigger("OnLeftyDeath");
+            //_speed = 0;
             _canFire = 10;
 
             Destroy(GetComponent<Collider2D>());
@@ -187,7 +190,7 @@ public class EnemyLefty : MonoBehaviour
             }
 
             _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnLeftyDeath");
             _speed = 0;
             _canFire = 10;
 
