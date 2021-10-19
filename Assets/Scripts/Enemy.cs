@@ -36,12 +36,15 @@ public class Enemy : MonoBehaviour
     private float _frequency = 1;
 
     private bool pastHalf = false;
+    private float circleFlip;
 
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _movementType = UnityEngine.Random.Range(0, 2);
-        
+        circleFlip = UnityEngine.Random.Range(0.0f, 1.0f);
+        Debug.Log("circleFlip = " + circleFlip);
+
         if (_player == null)
         {
             Debug.Log("The Player is NULL");
@@ -129,7 +132,14 @@ public class Enemy : MonoBehaviour
                 case 1: // circle
                     if (pastHalf == true)
                     {
-                        direction = new Vector3(Mathf.Cos(Time.time * _frequency) * _amplitude, Mathf.Sin(Time.time * _frequency) * _amplitude, 0);
+                        if (circleFlip > .5f)
+                        {
+                            direction = new Vector3(Mathf.Cos(Time.time * _frequency) * _amplitude, Mathf.Sin(Time.time * _frequency) * _amplitude, 0);
+                        }
+                        else
+                        {
+                            direction = new Vector3((Mathf.Sin(Time.time * _frequency) * _amplitude), (Mathf.Cos(Time.time * _frequency) * _amplitude), 0);
+                        }
                     }
                     else
                     {

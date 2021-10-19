@@ -31,8 +31,11 @@ public class Player : MonoBehaviour
     private AudioClip _outOfAmmoSound;
     [SerializeField]
     private AudioClip _laserHitPlayerSound;
+    [SerializeField]
+    private AudioClip _blackHoleSound;
 
     private AudioSource _audioSource;
+    private AudioSource _audioSourceBH;
 
     [SerializeField]
     private Vector3 offset = new Vector3(0, 0.8f, 0);
@@ -52,6 +55,8 @@ public class Player : MonoBehaviour
     public static bool BlackHoleIsOn = false;
 
     private SpawnManager _spawnManager;
+
+
 
     int lastRunnerTripleShot = 0;
     int lastRunnerSpeedBoost = 0;
@@ -91,6 +96,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _audioSourceBH = GameObject.Find("BlackHoleAudioSource").GetComponent<AudioSource>();
         _outOfAmmoSound = GetComponent<Player>()._outOfAmmoSound;
         _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
         _shieldRenderer.SetColor("_Color", Color.white);
@@ -106,6 +112,11 @@ public class Player : MonoBehaviour
         else
         {
             _audioSource.clip = _laserSound;
+        }
+
+        if (_audioSourceBH == null)
+        {
+            Debug.LogError("The Audio Source on the Black Hole is NULL");
         }
 
         if (_spawnManager == null)
@@ -155,6 +166,8 @@ public class Player : MonoBehaviour
                     BlackHoleOnScreen = Instantiate(_blackHole, new Vector3(0, 3, 0), Quaternion.identity);
                     onBlackHoleAction();
                     BlackHoleIsOn = true;
+                    _audioSourceBH.Play();
+                    shake.CamShakeBH();
                 }
                 StartCoroutine(BlackHolePowerDownRoutine());
             }
@@ -289,7 +302,7 @@ public class Player : MonoBehaviour
 
         }
 
-        _lives--;
+        //_lives--;
         shake.CamShake();
 
         switch (_lives)
@@ -424,6 +437,8 @@ public class Player : MonoBehaviour
 
     IEnumerator BlackHolePowerDownRoutine()
     {
+        //yield return new WaitForSeconds(_audioSource.clip.length);
+
         yield return new WaitForSeconds(5.0f);
         Destroy(BlackHoleOnScreen);
         _blackHoleActive = false;
