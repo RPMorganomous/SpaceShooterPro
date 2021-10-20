@@ -90,6 +90,9 @@ public class Player : MonoBehaviour
 
     private Shake shake;
 
+    [SerializeField]
+    private bool _invincibility;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -104,6 +107,7 @@ public class Player : MonoBehaviour
         shake = GameObject.FindGameObjectWithTag("ScreenShake").GetComponent<Shake>();
 
         shiftBoostPower = 100f;
+        _uiManager.UpdateAmmo(_ammo);
 
         if (_audioSource == null)
         {
@@ -173,6 +177,8 @@ public class Player : MonoBehaviour
             }
         }
 
+        //if (Input.GetKeyDown(KeyCode.1)) maybe add an ammo order here?
+
         ColorChanger();
     }
 
@@ -217,6 +223,7 @@ public class Player : MonoBehaviour
                 _audioSource.Play();
                     _ammo--;
             }
+            _uiManager.UpdateAmmo(_ammo);
         }
         else
         {
@@ -235,6 +242,7 @@ public class Player : MonoBehaviour
     {
         _ammo += 15;
         _audioSource.clip = _laserSound;
+        _uiManager.UpdateAmmo(_ammo);
     }
 
     void CalculateMovement()
@@ -302,7 +310,11 @@ public class Player : MonoBehaviour
 
         }
 
-        //_lives--;
+        if (_invincibility == false)
+        {
+            _lives--;
+        }
+        
         shake.CamShake();
 
         switch (_lives)
@@ -437,8 +449,6 @@ public class Player : MonoBehaviour
 
     IEnumerator BlackHolePowerDownRoutine()
     {
-        //yield return new WaitForSeconds(_audioSource.clip.length);
-
         yield return new WaitForSeconds(5.0f);
         Destroy(BlackHoleOnScreen);
         _blackHoleActive = false;
