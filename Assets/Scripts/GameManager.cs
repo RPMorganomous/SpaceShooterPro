@@ -6,6 +6,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private bool _isGameOver = (false);
+    public bool _isNewWave = (false);
+    //[SerializeField]
+    //public UIManager _uiManager;
+    public int _wave;
+
+    private void Start()
+    {
+        //_uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+    }
 
     private void Update()
     {
@@ -25,5 +34,12 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         _isGameOver = (true);
+    }
+
+    public void NextWave()
+    {
+        _isNewWave = (true);
+        //_uiManager.Wave_text = (true);
+
     }
 }

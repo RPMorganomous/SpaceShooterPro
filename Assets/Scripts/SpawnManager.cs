@@ -19,23 +19,52 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _powerupPrefab;
 
+    [SerializeField]
+    private UIManager _uiManager;
+
+    private Component _gameManagerComponentScript;
+
     private bool _stopSpawning = false;
 
     public string enemyType = "StraightDown";
 
+    private int waveCounter = 1;
+    public int enemiesSpawnedTotal = 0;
+    public int enemiesActiveCounter;
+    private int waveEnemyAdd = 1;
+    public int enemiesThisWave = 1;
+    public int enemiesKilledThisWave;
+    public int enemiesSpawnedThisWave = 0;
+
     void Start()
     {
-
+        if (_uiManager == null)
+        {
+            Debug.LogError("UIManager is NULL.");
+        }
     }
 
     public void StartSpawning()
-    {
+    { 
+        enemiesKilledThisWave = 0;
+        enemiesThisWave = waveCounter;
+        _uiManager.UpdateEITW(enemiesThisWave);
+        _stopSpawning = false;
+        _uiManager.UpdateEnemiesSpawnedTotal(enemiesSpawnedTotal);
+        enemiesSpawnedThisWave = 0;
+        _uiManager.UpdateESITW(enemiesSpawnedThisWave);
         StartCoroutine(SpawnEnemyRoutine());
+     //   StartCoroutine(SpawnPowerUpRoutine());
+    }
+
+    public void StartSpawingPowerups()
+    {
         StartCoroutine(SpawnPowerUpRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
     {
+        _uiManager.NextWave(waveCounter);
         yield return new WaitForSeconds(3.0f);
         while (_stopSpawning == false)
         {
@@ -64,14 +93,20 @@ public class SpawnManager : MonoBehaviour
                 GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
+            
             yield return new WaitForSeconds(Random.Range(3f, 8f));
+
+            if (enemiesSpawnedThisWave > (enemiesThisWave - 1))
+            {
+                _stopSpawning = true;
+            }
         }
     }
 
     IEnumerator SpawnPowerUpRoutine()
     {
         yield return new WaitForSeconds(3.0f);
-        while (_stopSpawning == false)
+        while (waveCounter > 0)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
@@ -83,6 +118,23 @@ public class SpawnManager : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(3f, 8f));
         }
+    }
+
+
+
+    public IEnumerator StartNewWave()
+    {
+        waveCounter++;
+        enemiesThisWave = waveCounter;
+        _uiManager.UpdateEITW(enemiesThisWave);
+        _uiManager.NextWave(waveCounter); 
+        enemiesSpawnedThisWave = 0;
+        enemiesKilledThisWave = 0;
+        _uiManager.UpdateESITW(enemiesSpawnedThisWave);
+        _uiManager.UpdateEKTW(enemiesKilledThisWave);
+        _stopSpawning = false;
+        StartSpawning();
+        yield return new WaitForSeconds(1.0f);
     }
 
     public void OnPlayerDeath()

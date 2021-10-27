@@ -114,22 +114,28 @@ public class EnemyLefty : MonoBehaviour
 
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        if (transform.position.y < -3.8f)
+        if (transform.position.x < -12f || transform.position.x  > 12f)
         {
-            float randomX = UnityEngine.Random.Range(-8f, 9f);
-            transform.position =
-                new Vector3(randomX, 7f, 0);
+            Destroy(this.gameObject);
         }
-        else if (transform.position.x > 10f)
-        {
-            float randomY = UnityEngine.Random.Range(0f, 6f);
-            transform.position = new Vector3(-10, randomY, 0);
-        }
-        else if (transform.position.x < -10f)
-        {
-            float randomY = UnityEngine.Random.Range(0f, 6f);
-            transform.position = new Vector3(10, randomY, 0);
-        }
+
+        // to make horizontal ships reappear on other side of screen
+        //if (transform.position.y < -3.8f)
+        //{
+        //    float randomX = UnityEngine.Random.Range(-8f, 9f);
+        //    transform.position =
+        //        new Vector3(randomX, 7f, 0);
+        //}
+        //else if (transform.position.x > 10f)
+        //{
+        //    float randomY = UnityEngine.Random.Range(0f, 6f);
+        //    transform.position = new Vector3(-10, randomY, 0);
+        //}
+        //else if (transform.position.x < -10f)
+        //{
+        //    float randomY = UnityEngine.Random.Range(0f, 6f);
+        //    transform.position = new Vector3(10, randomY, 0);
+        //}
     }
 
     private void FireEnemyLaser()
@@ -169,7 +175,7 @@ public class EnemyLefty : MonoBehaviour
 
             if (_player != null)
             {
-                _player.AddScore(10);
+                _player.AddScore(25);
             }
 
             _audioSource.Play();
@@ -186,7 +192,7 @@ public class EnemyLefty : MonoBehaviour
         {
             if (_player != null)
             {
-                _player.AddScore(10);
+                _player.AddScore(25);
             }
 
             _audioSource.Play();

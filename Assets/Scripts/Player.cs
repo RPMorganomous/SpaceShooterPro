@@ -56,8 +56,6 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
-
-
     int lastRunnerTripleShot = 0;
     int lastRunnerSpeedBoost = 0;
 

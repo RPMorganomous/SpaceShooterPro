@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _audioSource;
 
+    private SpawnManager _spawnManager;
+
+    private UIManager _uiManager;
+
     private bool _stopFiring = false;
 
     [SerializeField]
@@ -41,6 +45,8 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _movementType = UnityEngine.Random.Range(0, 2);
         circleFlip = UnityEngine.Random.Range(0.0f, 1.0f);
         Debug.Log("circleFlip = " + circleFlip);
@@ -62,6 +68,20 @@ public class Enemy : MonoBehaviour
         {
             _speed = .5f;
             direction = new Vector3(0, 3, 0) - transform.position;
+        }
+
+        if (_spawnManager == null)
+        {
+            Debug.Log("The Spawn Manager is NULL");
+        }
+        else
+        {
+            _spawnManager.enemiesActiveCounter++;
+            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
+            _spawnManager.enemiesSpawnedTotal++;
+            _uiManager.UpdateEnemiesSpawnedTotal(_spawnManager.enemiesSpawnedTotal);
+            _spawnManager.enemiesSpawnedThisWave++;
+            _uiManager.UpdateESITW(_spawnManager.enemiesSpawnedThisWave);
         }
     }
 
@@ -229,6 +249,15 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _canFire = 10;
+            _spawnManager.enemiesActiveCounter--;
+            _spawnManager.enemiesKilledThisWave++;
+            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            {
+                StartCoroutine(_spawnManager.StartNewWave());
+            }
+
+            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
 
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
@@ -247,6 +276,14 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _canFire = 10;
+            _spawnManager.enemiesActiveCounter--;
+            _spawnManager.enemiesKilledThisWave++;
+            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            {
+                StartCoroutine(_spawnManager.StartNewWave());
+            }
+            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
 
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
@@ -264,6 +301,14 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _canFire = 10;
+            _spawnManager.enemiesActiveCounter--;
+            _spawnManager.enemiesKilledThisWave++;
+            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            {
+                StartCoroutine(_spawnManager.StartNewWave());
+            }
+            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
 
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.8f);
