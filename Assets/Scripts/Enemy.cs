@@ -42,6 +42,11 @@ public class Enemy : MonoBehaviour
     private bool pastHalf = false;
     private float circleFlip;
 
+    [SerializeField]
+    private GameObject _shieldVisualizer;
+    private float shielded;
+    private bool shieldsUp = false;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -49,6 +54,14 @@ public class Enemy : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _movementType = UnityEngine.Random.Range(0, 2);
         circleFlip = UnityEngine.Random.Range(0.0f, 1.0f);
+        shielded = UnityEngine.Random.Range(0.0f, 1.0f);
+
+        if (shielded > .8f)
+        {
+            shieldsUp = true;
+            _shieldVisualizer.SetActive(true);
+        }
+
         Debug.Log("circleFlip = " + circleFlip);
 
         if (_player == null)
@@ -245,49 +258,64 @@ public class Enemy : MonoBehaviour
                 player.Damage();
             }
 
-            _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _canFire = 10;
-            _spawnManager.enemiesActiveCounter--;
-            _spawnManager.enemiesKilledThisWave++;
-            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
-            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            if (shieldsUp == false)
             {
-                StartCoroutine(_spawnManager.StartNewWave());
+                _audioSource.Play();
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _canFire = 10;
+                _spawnManager.enemiesActiveCounter--;
+                _spawnManager.enemiesKilledThisWave++;
+                _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+                if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+                {
+                    StartCoroutine(_spawnManager.StartNewWave());
+                }
+
+                _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
+
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.8f);
             }
-
-            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
-
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
+            else
+            {
+                shieldsUp = false;
+                _shieldVisualizer.SetActive(false);
+            }
         }
 
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
-
-            if (_player != null)
+            if (shieldsUp == false)
             {
-                _player.AddScore(10);
-            }
+                Destroy(other.gameObject);
 
-            _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _canFire = 10;
-            _spawnManager.enemiesActiveCounter--;
-            _spawnManager.enemiesKilledThisWave++;
-            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
-            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+                if (_player != null)
+                {
+                    _player.AddScore(10);
+                }
+
+                _audioSource.Play();
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _canFire = 10;
+                _spawnManager.enemiesActiveCounter--;
+                _spawnManager.enemiesKilledThisWave++;
+                _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+                if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+                {
+                    StartCoroutine(_spawnManager.StartNewWave());
+                }
+                _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
+
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.8f);
+            }
+            else
             {
-                StartCoroutine(_spawnManager.StartNewWave());
+                shieldsUp = false;
+                _shieldVisualizer.SetActive(false);
             }
-            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
-
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
-            
         }
 
         if (other.tag == "BlackHole")
@@ -296,7 +324,8 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(10);
             }
-
+            shieldsUp = false;
+            _shieldVisualizer.SetActive(false);
             _audioSource.Play();
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
@@ -317,21 +346,29 @@ public class Enemy : MonoBehaviour
 
         if (other.tag == "FireBall")
         {
-            _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _canFire = 10;
-            _spawnManager.enemiesActiveCounter--;
-            _spawnManager.enemiesKilledThisWave++;
-            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
-            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            if (shieldsUp == false)
             {
-                StartCoroutine(_spawnManager.StartNewWave());
-            }
-            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
+                _audioSource.Play();
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _canFire = 10;
+                _spawnManager.enemiesActiveCounter--;
+                _spawnManager.enemiesKilledThisWave++;
+                _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+                if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+                {
+                    StartCoroutine(_spawnManager.StartNewWave());
+                }
+                _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
 
-            //Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
+                //Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.8f);
+            }
+            else
+            {
+                shieldsUp = false;
+                _shieldVisualizer.SetActive(false);
+            }
         }
     }
 }

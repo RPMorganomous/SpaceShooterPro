@@ -110,11 +110,33 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
-            int randomPowerUp = 6; // Random.Range(0, 7);
+            int randomPowerUpBalance = UnityEngine.Random.Range(0, 100);
 
-            GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
-                                                posToSpawn,
-                                                Quaternion.identity);
+            if (randomPowerUpBalance > 79)
+            {
+                if (randomPowerUpBalance > 89)
+                {
+                    GameObject newPowerUpFireBall = Instantiate(_powerupPrefab[6],
+                                        posToSpawn,
+                                        Quaternion.identity);
+                }
+                else
+                {
+                    GameObject newPowerUpBlackHole = Instantiate(_powerupPrefab[5],
+                                        posToSpawn,
+                                        Quaternion.identity);
+                }
+            }
+
+            if (randomPowerUpBalance < 80)
+            {
+                int randomPowerUp = Random.Range(0, 5);
+
+                GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
+                                                    posToSpawn,
+                                                    Quaternion.identity);
+            }
+
 
             yield return new WaitForSeconds(Random.Range(3f, 8f));
         }
