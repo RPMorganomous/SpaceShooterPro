@@ -58,6 +58,9 @@ public class Powerup : MonoBehaviour
                         Debug.Log("blackHoleActive 1.0");
                         player.BlackholePowerup();
                         break;
+                    case 6:
+                        player.Damage();
+                        break;
                 }
 
             }

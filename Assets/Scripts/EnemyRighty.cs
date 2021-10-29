@@ -204,6 +204,14 @@ public class EnemyRighty : MonoBehaviour
             Destroy(this.gameObject, 2.8f);
 
         }
+        if (other.tag == "FireBall")
+        {
+            _audioSource.Play();
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            _canFire = 10;
 
+            Destroy(this.gameObject, 2.8f);
+        }
     }
 }

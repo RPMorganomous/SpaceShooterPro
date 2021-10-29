@@ -315,5 +315,23 @@ public class Enemy : MonoBehaviour
 
         }
 
+        if (other.tag == "FireBall")
+        {
+            _audioSource.Play();
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            _canFire = 10;
+            _spawnManager.enemiesActiveCounter--;
+            _spawnManager.enemiesKilledThisWave++;
+            _uiManager.UpdateEKTW(_spawnManager.enemiesKilledThisWave);
+            if (_spawnManager.enemiesKilledThisWave == _spawnManager.enemiesThisWave)
+            {
+                StartCoroutine(_spawnManager.StartNewWave());
+            }
+            _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
+
+            //Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.8f);
+        }
     }
 }
