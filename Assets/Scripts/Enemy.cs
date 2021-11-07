@@ -6,9 +6,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.0f;
+    public float _speed = 4.0f;
 
-    private Player _player;
+    public Player _player;
 
     private Animator _anim;
 
@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
     private bool BlackHoleIsOnNow = false;
 
     private int _movementType;
+    //private int isKamakazi = 0;
 
     [SerializeField]
     private float _amplitude = 1;
@@ -47,12 +48,28 @@ public class Enemy : MonoBehaviour
     private float shielded;
     private bool shieldsUp = false;
 
+    [SerializeField]
+    private GameObject _radarVisualizer;
+    [SerializeField]
+    private float _radarRange = 5.0f;
+    private float radarActiveRandom;
+    [SerializeField]
+    private int _percentKamakazi = 50;
+
+    private float _distanceToPlayer;
+    //[SerializeField]
+    private float _chaseMultiplier;
+
+    private bool isChasing = false;
+
     void Start()
     {
+        //Debug.Log("ENEMY START");
         _player = GameObject.Find("Player").GetComponent<Player>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _movementType = UnityEngine.Random.Range(0, 2);
+
         circleFlip = UnityEngine.Random.Range(0.0f, 1.0f);
         shielded = UnityEngine.Random.Range(0.0f, 1.0f);
 
@@ -60,6 +77,14 @@ public class Enemy : MonoBehaviour
         {
             shieldsUp = true;
             _shieldVisualizer.SetActive(true);
+        }
+
+        radarActiveRandom = UnityEngine.Random.Range(0, 100);
+        Debug.Log("radarActiveRandom = " + radarActiveRandom);
+        if (radarActiveRandom < _percentKamakazi)
+        {
+            _radarVisualizer.SetActive(true);
+            _radarVisualizer.GetComponent<CircleCollider2D>().radius = _radarRange;
         }
 
         Debug.Log("circleFlip = " + circleFlip);
@@ -123,7 +148,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-
+        //Debug.Log("ENEMY UPDATE");
         Calculatemovement();
 
         if (Time.time > _canFire)
@@ -185,10 +210,46 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        transform.Translate(direction * _speed * Time.deltaTime);
-        if (_movementType == 1)
+        if (isChasing)
         {
-            if (pastHalf == false)
+            Debug.Log("MOVING TOWARDS PLAYER");
+            Vector3 dir = this.transform.position - _player.transform.position;
+            dir = dir.normalized;
+            this.transform.position -= dir * Time.deltaTime * (_speed);
+        }
+        else
+        {
+            transform.Translate(direction * _speed * Time.deltaTime);
+            if (_movementType == 1)
+            {
+                if (pastHalf == false)
+                {
+                    if (transform.position.y < -3.8f)
+                    {
+                        float randomX = UnityEngine.Random.Range(-8f, 9f);
+                        transform.position = new Vector3(randomX, 7f, 0);
+                    }
+                    else if (transform.position.x > 10f)
+                    {
+                        float randomY = UnityEngine.Random.Range(0f, 6f);
+                        transform.position = new Vector3(-10, randomY, 0);
+                    }
+                    else if (transform.position.x < -10f)
+                    {
+                        float randomY = UnityEngine.Random.Range(0f, 6f);
+                        transform.position = new Vector3(10, randomY, 0);
+                    }
+                }
+                else if (transform.position.x > 10f)
+                {
+                    transform.position = new Vector3(-10, transform.position.y, 0);
+                }
+                else if (transform.position.x < -10f)
+                {
+                    transform.position = new Vector3(10, transform.position.y, 0);
+                }
+            }
+            else
             {
                 if (transform.position.y < -3.8f)
                 {
@@ -206,34 +267,13 @@ public class Enemy : MonoBehaviour
                     transform.position = new Vector3(10, randomY, 0);
                 }
             }
-            else if (transform.position.x > 10f)
-            {
-                transform.position = new Vector3(-10, transform.position.y, 0);
-            }
-            else if (transform.position.x < -10f)
-            {
-                transform.position = new Vector3(10, transform.position.y, 0);
-            }
         }
-        else
-        {
-            if (transform.position.y < -3.8f)
-            {
-                float randomX = UnityEngine.Random.Range(-8f, 9f);
-                transform.position = new Vector3(randomX, 7f, 0);
-            }
-            else if (transform.position.x > 10f)
-            {
-                float randomY = UnityEngine.Random.Range(0f, 6f);
-                transform.position = new Vector3(-10, randomY, 0);
-            }
-            else if (transform.position.x < -10f)
-            {
-                float randomY = UnityEngine.Random.Range(0f, 6f);
-                transform.position = new Vector3(10, randomY, 0);
-            }
-        }
+    }
 
+    public void ChasePlayer(bool chasing)
+    {
+        Debug.Log("IS CHASING PLAYER");
+        isChasing = chasing;
     }
 
     private void FireEnemyLaser()
@@ -274,6 +314,8 @@ public class Enemy : MonoBehaviour
 
                 _uiManager.UpdateEnemiesActive(_spawnManager.enemiesActiveCounter);
 
+                Debug.Log("KILLED BY PLAYER");
+
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject, 2.8f);
             }
@@ -281,6 +323,7 @@ public class Enemy : MonoBehaviour
             {
                 shieldsUp = false;
                 _shieldVisualizer.SetActive(false);
+                ChasePlayer(false);
             }
         }
 
