@@ -17,9 +17,9 @@ public class enemyLaser : MonoBehaviour
     void Update()
     {
         transform.Translate(
-            Vector3.down * _speed * Time.deltaTime);
+            Vector3.down * _speed * Time.deltaTime); //Vector3.up if player is behind enemy
 
-        if (transform.position.y < -8f)
+        if (transform.position.y < -8f) //or > something
         {
             if (transform.parent != null)
             {

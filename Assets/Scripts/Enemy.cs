@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private GameObject _enemyLaserPrefab;
+    [SerializeField]
+    private GameObject _enemySpaceMinePrefab;
 
     private float _fireRate = 3.0f;
     private float _canFire = -1.0f;
@@ -61,6 +63,8 @@ public class Enemy : MonoBehaviour
     private float _chaseMultiplier;
 
     private bool isChasing = false;
+
+    private float bottomOfScreen = -4.8f;
 
     void Start()
     {
@@ -155,14 +159,22 @@ public class Enemy : MonoBehaviour
         {
             _fireRate = UnityEngine.Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
+            if (transform.position.y < _player.transform.position.y)
+            {
+                GameObject enemyLaser = Instantiate(
+                _enemySpaceMinePrefab, transform.position, Quaternion.identity);
+            }
+            else 
+            { 
             GameObject enemyLaser = Instantiate(
                 _enemyLaserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-            for(int i = 0; i < lasers.Length; i++)
-            {
-                lasers[i].AssignEnemyLaser();
-                lasers[i].tag = "EnemyLaser";
+            for (int i = 0; i < lasers.Length; i++)
+                {
+                    lasers[i].AssignEnemyLaser();
+                    lasers[i].tag = "EnemyLaser";
+                }
             }
         }
     }
@@ -224,7 +236,7 @@ public class Enemy : MonoBehaviour
             {
                 if (pastHalf == false)
                 {
-                    if (transform.position.y < -3.8f)
+                    if (transform.position.y < bottomOfScreen)
                     {
                         float randomX = UnityEngine.Random.Range(-8f, 9f);
                         transform.position = new Vector3(randomX, 7f, 0);
@@ -251,7 +263,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                if (transform.position.y < -3.8f)
+                if (transform.position.y < bottomOfScreen)
                 {
                     float randomX = UnityEngine.Random.Range(-8f, 9f);
                     transform.position = new Vector3(randomX, 7f, 0);
@@ -280,9 +292,16 @@ public class Enemy : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+        if (transform.position.y > _player.transform.position.y) // player is in front of enemy
+        {
+            Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+        }
+        else //player is behind enemy
+        {
+            Instantiate(_enemySpaceMinePrefab, transform.position, Quaternion.identity);
+        }
+        
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {

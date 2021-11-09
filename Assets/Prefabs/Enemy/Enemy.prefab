@@ -237,6 +237,7 @@ MonoBehaviour:
   _speed: 4
   _player: {fileID: 0}
   _enemyLaserPrefab: {fileID: 727467545374099747, guid: 4a08d7aa59537f54ab50df3df11f8096, type: 3}
+  _enemySpaceMinePrefab: {fileID: 2618804539094936621, guid: 63cc16fdb54db5a4395131d0f13ea50b, type: 3}
   _amplitude: 1
   _frequency: 1
   _shieldVisualizer: {fileID: 815244464}
