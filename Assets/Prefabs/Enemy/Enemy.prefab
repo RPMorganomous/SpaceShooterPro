@@ -244,6 +244,7 @@ MonoBehaviour:
   _radarVisualizer: {fileID: 1328018315730764327}
   _radarRange: 5
   _percentKamakazi: 50
+  bottomOfScreen: -4.8
 --- !u!212 &6609845150978704173
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
     private float _chaseMultiplier;
 
     private bool isChasing = false;
-
+    [SerializeField]
     private float bottomOfScreen = -4.8f;
 
     void Start()
