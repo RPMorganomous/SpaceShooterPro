@@ -288,19 +288,19 @@ public class Enemy : MonoBehaviour
         isChasing = chasing;
     }
 
-    private void FireEnemyLaser()
+    public void FireEnemyLaser()
     {
-        _canFire = Time.time + _fireRate;
+        //Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
 
-        if (transform.position.y > _player.transform.position.y) // player is in front of enemy
+        GameObject enemyLaser = Instantiate(
+            _enemyLaserPrefab, transform.position, Quaternion.identity);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+        for (int i = 0; i < lasers.Length; i++)
         {
-            Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+            lasers[i].AssignEnemyLaser();
+            lasers[i].tag = "EnemyLaser";
         }
-        else //player is behind enemy
-        {
-            Instantiate(_enemySpaceMinePrefab, transform.position, Quaternion.identity);
-        }
-        
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -45,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7644306946231700752, guid: 6ed0e6bc374ce04448f0d2be0ae1c523, type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: EnemyLaser
       objectReference: {fileID: 0}
     - target: {fileID: 7644306946231700756, guid: 6ed0e6bc374ce04448f0d2be0ae1c523, type: 3}
       propertyPath: m_RootOrder
@@ -111,7 +111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7644306946231700752, guid: 6ed0e6bc374ce04448f0d2be0ae1c523, type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: EnemyLaser
       objectReference: {fileID: 0}
     - target: {fileID: 7644306946231700756, guid: 6ed0e6bc374ce04448f0d2be0ae1c523, type: 3}
       propertyPath: m_RootOrder
