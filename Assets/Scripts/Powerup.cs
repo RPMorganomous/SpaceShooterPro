@@ -8,16 +8,37 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private float _speed = 3;
 
+    private float _speedC = 3;
+
     [SerializeField] //0=TripleShot 1=Speed 2=Shields 3=LaserRecharge
     private int powerupID;
 
     [SerializeField]
     private AudioClip _clip;
 
+    [SerializeField]
+    private Player _player;
+
+    private Vector3 direction;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
     void Update()
     {
 
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (Input.GetKey(KeyCode.C))
+        {
+            direction = (_player.transform.position) - transform.position;
+            direction = direction.normalized;
+            transform.Translate(direction * _speedC * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        }
 
         if (transform.position.y < -4.5f)
         {

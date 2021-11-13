@@ -191,6 +191,7 @@ public class Enemy : MonoBehaviour
         {
             _speed = .5f;
             direction = new Vector3(0, 3, 0) - transform.position;
+            //direction = direction.normalized; - could play with this later, but I like the effect without it
         }
         else
         {
