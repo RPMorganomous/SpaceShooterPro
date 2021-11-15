@@ -16,9 +16,7 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _clip;
 
-    [SerializeField]
     private Player _player;
-
     private Vector3 direction;
 
     private void Start()
@@ -28,7 +26,6 @@ public class Powerup : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetKey(KeyCode.C))
         {
             direction = (_player.transform.position) - transform.position;

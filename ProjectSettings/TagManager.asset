@@ -10,6 +10,7 @@ TagManager:
   - BlackHole
   - ScreenShake
   - FireBall
+  - Powerup
   layers:
   - Default
   - TransparentFX

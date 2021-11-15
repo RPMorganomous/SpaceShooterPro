@@ -623,7 +623,7 @@ MonoBehaviour:
   - {fileID: 1335155851}
   - {fileID: 203402792}
   - {fileID: 1785181251}
-  _invincibility: 0
+  _invincibility: 1
 --- !u!212 &425442012
 SpriteRenderer:
   m_ObjectHideFlags: 0
