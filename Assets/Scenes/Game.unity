@@ -561,6 +561,79 @@ RectTransform:
   m_AnchoredPosition: {x: 72.4204, y: -19.7474}
   m_SizeDelta: {x: 292.0371, y: 59.5901}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &335417290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 670912447516978577, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_Name
+      value: EnemyDodger
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 670912447516978589, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273819270750652879, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_Size.x
+      value: 4.0782213
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273819270750652879, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_Size.y
+      value: 6.9166646
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273819270750652879, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00605917
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273819270750652879, guid: 323be6110122c0e40892175ed79e6825, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.12876534
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 323be6110122c0e40892175ed79e6825, type: 3}
 --- !u!1 &425442010
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +696,10 @@ MonoBehaviour:
   - {fileID: 1335155851}
   - {fileID: 203402792}
   - {fileID: 1785181251}
-  _invincibility: 1
+  _invincibility: 0
+  _turnLeft: {fileID: 21300000, guid: f3346fe3e2c9e4527a394f1e99d25f1f, type: 3}
+  _turnRight: {fileID: 21300000, guid: c83085279e66140008ba22ca901f4c4b, type: 3}
+  _turnNone: {fileID: 21300000, guid: 1b4a8fdd39d3a45d0a9ee484ad6800ec, type: 3}
 --- !u!212 &425442012
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3038,6 +3114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 1954567773416893746, guid: a2d13e5dea47c8049b2c55b1d27de059, type: 3}
+  _enemyDodger: {fileID: 670912447516978577, guid: 323be6110122c0e40892175ed79e6825, type: 3}
   _enemyLefty: {fileID: 3729283678004807126, guid: 6da4981a078653f498b9724a977bb424, type: 3}
   _enemyRighty: {fileID: 5487325381614699686, guid: 50b57a299688c6044bd45373597d62b2, type: 3}
   _enemyContainer: {fileID: 508373060}

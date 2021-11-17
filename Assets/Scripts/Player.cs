@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
-    private int _ammo = 15;
+    public int _ammo = 15;
 
     public static Action onBlackHoleAction;
 
@@ -91,6 +91,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _invincibility;
 
+    [SerializeField]
+    private Sprite _turnLeft, _turnRight, _turnNone;
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -101,6 +105,8 @@ public class Player : MonoBehaviour
         _outOfAmmoSound = GetComponent<Player>()._outOfAmmoSound;
         _shieldRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>().material;
         _shieldRenderer.SetColor("_Color", Color.white);
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+
 
         shake = GameObject.FindGameObjectWithTag("ScreenShake").GetComponent<Shake>();
 
@@ -247,6 +253,21 @@ public class Player : MonoBehaviour
     {
         float horizontalInput =
               Input.GetAxis("Horizontal");
+
+        if (horizontalInput > 0)
+        {
+            spriteRenderer.sprite = _turnRight;
+        }
+
+        if (horizontalInput < 0)
+        {
+            spriteRenderer.sprite = _turnLeft;
+        }
+
+        if (horizontalInput == 0)
+        {
+            spriteRenderer.sprite = _turnNone;
+        }
 
         float verticalInput =
             Input.GetAxis("Vertical");

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _enemyPrefab;
+    private GameObject _enemyPrefab, _enemyDodger;
 
     [SerializeField]
     private GameObject _enemyLefty;
@@ -23,6 +23,8 @@ public class SpawnManager : MonoBehaviour
     private UIManager _uiManager;
 
     private Component _gameManagerComponentScript;
+    [SerializeField]
+    Player player;
 
     private bool _stopSpawning = false;
 
@@ -54,7 +56,6 @@ public class SpawnManager : MonoBehaviour
         enemiesSpawnedThisWave = 0;
         _uiManager.UpdateESITW(enemiesSpawnedThisWave);
         StartCoroutine(SpawnEnemyRoutine());
-     //   StartCoroutine(SpawnPowerUpRoutine());
     }
 
     public void StartSpawingPowerups()
@@ -89,9 +90,20 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
-                Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-                GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-                newEnemy.transform.parent = _enemyContainer.transform;
+                int randomEnemy = UnityEngine.Random.Range(0, 100);
+
+                if (randomEnemy > 90)
+                {
+                    Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                    GameObject newEnemy = Instantiate(_enemyDodger, posToSpawn, Quaternion.identity);
+                    newEnemy.transform.parent = _enemyContainer.transform;
+                }
+                else
+                {
+                    Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                    GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+                    newEnemy.transform.parent = _enemyContainer.transform;
+                }
             }
             
             yield return new WaitForSeconds(Random.Range(3f, 8f));
@@ -130,12 +142,20 @@ public class SpawnManager : MonoBehaviour
 
             if (randomPowerUpBalance < 80)
             {
-                int randomPowerUp = Random.Range(0, 5);
+                if (player.GetComponent<Player>()._ammo == 0)
+                {
+                    GameObject newPowerUp = Instantiate(_powerupPrefab[3], posToSpawn, Quaternion.identity);
+                }
+                else
+                {
+                    int randomPowerUp = Random.Range(0, 5);
 
-                GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
-                                                    posToSpawn,
-                                                    Quaternion.identity);
+                    GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
+                                                        posToSpawn,
+                                                        Quaternion.identity);
+                }
             }
+
 
 
             yield return new WaitForSeconds(Random.Range(3f, 8f));

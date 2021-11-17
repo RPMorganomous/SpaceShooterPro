@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyDodger : MonoBehaviour
 {
     [SerializeField]
     public float _speed = 4.0f;
@@ -65,8 +65,6 @@ public class Enemy : MonoBehaviour
     private bool isChasing = false, isDodging = false;
     [SerializeField]
     private float bottomOfScreen = -4.8f;
-
-    private float laserXpos;
 
     void Start()
     {
@@ -141,7 +139,7 @@ public class Enemy : MonoBehaviour
         {
             BlackHoleIsOnNow = true;
         }
-        else 
+        else
         {
             BlackHoleIsOnNow = false;
         }
@@ -166,13 +164,13 @@ public class Enemy : MonoBehaviour
                 GameObject enemyLaser = Instantiate(
                 _enemySpaceMinePrefab, transform.position, Quaternion.identity);
             }
-            else 
-            { 
-            GameObject enemyLaser = Instantiate(
-                _enemyLaserPrefab, transform.position, Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            else
+            {
+                GameObject enemyLaser = Instantiate(
+                    _enemyLaserPrefab, transform.position, Quaternion.identity);
+                Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-            for (int i = 0; i < lasers.Length; i++)
+                for (int i = 0; i < lasers.Length; i++)
                 {
                     lasers[i].AssignEnemyLaser();
                     lasers[i].tag = "EnemyLaser";
@@ -226,14 +224,10 @@ public class Enemy : MonoBehaviour
         }
         if (isDodging)
         {
-            if (laserXpos > this.transform.position.x)
-            {
-                this.transform.position += Vector3.left * Time.deltaTime * (_speed * 2);
-            }
-            else
-            {
-                this.transform.position += Vector3.right * Time.deltaTime * (_speed * 2);
-            }
+            //move away from laser
+            Vector3 dir = this.transform.position - _player.transform.position;
+            dir = dir.normalized;
+            this.transform.position += dir * Time.deltaTime * (_speed);
         }
         else
         {
@@ -304,10 +298,9 @@ public class Enemy : MonoBehaviour
         isChasing = chasing;
     }
 
-    public void DodgeLaser(bool dodging, float xPosLaser)
+    public void DodgeLaser(bool dodging)
     {
         isDodging = dodging;
-        laserXpos = xPosLaser;
     }
 
     public void FireEnemyLaser()
@@ -456,3 +449,4 @@ public class Enemy : MonoBehaviour
         }
     }
 }
+
