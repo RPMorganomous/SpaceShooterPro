@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float _speedMultiplier = 2;
 
     [SerializeField]
-    private GameObject _laserPrefab;
+    private GameObject _laserPrefab, _torpedoPrefab;
 
     [SerializeField]
     private GameObject _tripleShot;
@@ -94,6 +94,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Sprite _turnLeft, _turnRight, _turnNone;
     private SpriteRenderer spriteRenderer;
+
+    private bool torpedosArmed = false;
 
     void Start()
     {
@@ -216,17 +218,27 @@ public class Player : MonoBehaviour
 
             if (_tripleShotActive == true)
             {
-                Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                GameObject laser = Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                if (torpedosArmed == true)
+                {
+                    laser.GetComponent<Laser>().ArmTorpedo();
+                }
                 _audioSource.Play();
-                    _ammo--;
-
+                _ammo--;
             }
             else
             {
-                Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+                GameObject laser = Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+                if (torpedosArmed == true)
+                {
+                    laser.GetComponent<Laser>().ArmTorpedo();
+                }
                 _audioSource.Play();
-                    _ammo--;
+                _ammo--;
             }
+
+
+
             _uiManager.UpdateAmmo(_ammo);
         }
         else
@@ -423,6 +435,12 @@ public class Player : MonoBehaviour
             lastRunnerSpeedBoost++;
         }
     }
+
+    public void TorpedoPowerup()
+    {
+        torpedosArmed = true;
+    }
+
 
     IEnumerator SpeedBoostPowerDownRoutine()
     {

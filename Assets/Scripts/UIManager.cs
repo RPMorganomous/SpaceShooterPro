@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     private Text _scoreText;
 
     [SerializeField]
-    private Text _ammoText;
+    private Text _ammoText, _torpedoText;
 
     [SerializeField]
     private Text _enemiesText;

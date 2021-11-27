@@ -2,21 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class Torpedo : MonoBehaviour
 {
 
     [SerializeField]
     private float _speed = 8.0f;
     private bool _isEnemyLaser = false;
-    private bool _isTorpedo = false;
+    private bool _isTorpedo = true;
     private GameObject closestEnemy;
     private Rigidbody2D rb;
 
     [SerializeField]
     private Sprite _laser, _torpedo;
     private SpriteRenderer spriteRenderer;
-
-    private GameObject currentEnemy;
 
     private void Start()
     {
@@ -84,16 +82,11 @@ public class Laser : MonoBehaviour
                 distanceToClosestEnemy = distanceToEnemy;
                 closestEnemy = currentEnemy;
             }
-            currentEnemy.GetComponentInChildren<Reticule>().unTargeted();
-            closestEnemy.GetComponentInChildren<Reticule>().unTargeted();
         }
-        
     }
 
     void TargetClosestEnemy()
     {
-        closestEnemy.GetComponentInChildren<Reticule>().Targeted();
-
         Vector2 direction = (Vector2)closestEnemy.transform.position - rb.position;
         direction.Normalize();
         float rotateAmount = Vector3.Cross(direction, transform.up).z;
@@ -127,12 +120,6 @@ public class Laser : MonoBehaviour
     public void AssignEnemyLaser()
     {
         _isEnemyLaser = true;
-    }
-
-    public void ArmTorpedo()
-    {
-        _isTorpedo = true;
-        spriteRenderer.sprite = _torpedo;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -175,21 +162,10 @@ public class Laser : MonoBehaviour
 
     public void DestroyLaser()
     {
-        if (closestEnemy != null)
-        {
-            closestEnemy.GetComponentInChildren<Reticule>().unTargeted();
-        }
-
-        if (currentEnemy != null)
-        {
-            currentEnemy.GetComponentInChildren<Reticule>().unTargeted();
-        }
-
         if (transform.parent != null)
         {
             Destroy(transform.parent.gameObject);
         }
-
         Destroy(this.gameObject);
     }
 

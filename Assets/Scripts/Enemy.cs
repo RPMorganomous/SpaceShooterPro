@@ -68,6 +68,9 @@ public class Enemy : MonoBehaviour
 
     private float laserXpos;
 
+    [SerializeField]
+    private GameObject _reticule;
+
     void Start()
     {
         //Debug.Log("ENEMY START");
@@ -325,6 +328,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Targeted()
+    {
+        _reticule.SetActive(true);
+    }
+
+    public void unTargeted()
+    {
+        _reticule.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -372,7 +385,8 @@ public class Enemy : MonoBehaviour
         {
             if (shieldsUp == false)
             {
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
+                other.gameObject.GetComponent<Laser>().DestroyLaser();
 
                 if (_player != null)
                 {
@@ -399,6 +413,8 @@ public class Enemy : MonoBehaviour
             {
                 shieldsUp = false;
                 _shieldVisualizer.SetActive(false);
+                _audioSource.Play();
+                other.gameObject.GetComponent<Laser>().DestroyLaser();
             }
         }
 

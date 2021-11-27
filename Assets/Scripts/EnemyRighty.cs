@@ -171,7 +171,8 @@ public class EnemyRighty : MonoBehaviour
 
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
+            other.gameObject.GetComponent<Laser>().DestroyLaser();
 
             if (_player != null)
             {

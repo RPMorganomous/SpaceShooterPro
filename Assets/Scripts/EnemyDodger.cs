@@ -365,7 +365,8 @@ public class EnemyDodger : MonoBehaviour
         {
             if (shieldsUp == false)
             {
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
+                other.gameObject.GetComponent<Laser>().DestroyLaser();
 
                 if (_player != null)
                 {
@@ -392,6 +393,7 @@ public class EnemyDodger : MonoBehaviour
             {
                 shieldsUp = false;
                 _shieldVisualizer.SetActive(false);
+                other.gameObject.GetComponent<Laser>().DestroyLaser();
             }
         }
 

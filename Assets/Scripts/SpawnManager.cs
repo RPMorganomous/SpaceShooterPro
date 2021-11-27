@@ -23,8 +23,8 @@ public class SpawnManager : MonoBehaviour
     private UIManager _uiManager;
 
     private Component _gameManagerComponentScript;
-    [SerializeField]
-    Player player;
+   [SerializeField]
+   Player player;
 
     private bool _stopSpawning = false;
 
@@ -128,13 +128,13 @@ public class SpawnManager : MonoBehaviour
             {
                 if (randomPowerUpBalance > 89)
                 {
-                    GameObject newPowerUpFireBall = Instantiate(_powerupPrefab[6],
+                    GameObject newPowerUpFireBall = Instantiate(_powerupPrefab[7],
                                         posToSpawn,
                                         Quaternion.identity);
                 }
                 else
                 {
-                    GameObject newPowerUpBlackHole = Instantiate(_powerupPrefab[5],
+                    GameObject newPowerUpBlackHole = Instantiate(_powerupPrefab[6],
                                         posToSpawn,
                                         Quaternion.identity);
                 }
@@ -148,9 +148,9 @@ public class SpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    int randomPowerUp = Random.Range(0, 5);
+                    int randomPowerUp = Random.Range(0, 6);
 
-                    GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
+                    GameObject newPowerUp = Instantiate(_powerupPrefab[5],
                                                         posToSpawn,
                                                         Quaternion.identity);
                 }
