@@ -251,7 +251,7 @@ public class Player : MonoBehaviour
     public void BlackholePowerup()
     {
         _blackHoleActive = true;
-        
+        Debug.Log("Black Hole Active = true");
     }
 
     public void LaserRecharge()
