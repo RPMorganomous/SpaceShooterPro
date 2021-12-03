@@ -21,11 +21,11 @@ public class Laser : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        //spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         if ((_isTorpedo == true) & (_isEnemyLaser == false))
         {
-            spriteRenderer.sprite = _torpedo;
+            //spriteRenderer.sprite = _torpedo;
             FindClosestEnemy();
             if (closestEnemy != null)
             {
@@ -38,7 +38,7 @@ public class Laser : MonoBehaviour
         }
         else
         {
-            spriteRenderer.sprite = _laser;
+            //spriteRenderer.sprite = _laser;
         }
     }
 
@@ -99,7 +99,7 @@ public class Laser : MonoBehaviour
         float rotateAmount = Vector3.Cross(direction, transform.up).z;
         rb.angularVelocity = -rotateAmount * (_speed * 60);
         rb.velocity = transform.up * _speed * 2;
-        Debug.Log("closestEnemy = " + closestEnemy);
+        //Debug.Log("closestEnemy = " + closestEnemy);
     }
 
     void MoveUp()
@@ -132,6 +132,7 @@ public class Laser : MonoBehaviour
     public void ArmTorpedo()
     {
         _isTorpedo = true;
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = _torpedo;
     }
 

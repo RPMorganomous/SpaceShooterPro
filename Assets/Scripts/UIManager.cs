@@ -67,7 +67,12 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int ammo)
     {
-        _ammoText.text = "Ammo: " + ammo;
+        _ammoText.text = "Lasers: " + ammo;
+    }
+
+    public void UpdateTorpedo(int torpedoes)
+    {
+        _torpedoText.text = "Missiles: " + torpedoes;
     }
 
     public void UpdateEnemiesActive(int enemiesActive)

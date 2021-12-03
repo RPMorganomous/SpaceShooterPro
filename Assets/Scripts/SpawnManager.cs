@@ -150,7 +150,7 @@ public class SpawnManager : MonoBehaviour
                 {
                     int randomPowerUp = Random.Range(0, 6);
 
-                    GameObject newPowerUp = Instantiate(_powerupPrefab[6],
+                    GameObject newPowerUp = Instantiate(_powerupPrefab[randomPowerUp],
                                                         posToSpawn,
                                                         Quaternion.identity);
                 }

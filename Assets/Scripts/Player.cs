@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab, _torpedoPrefab;
 
     [SerializeField]
-    private GameObject _tripleShot;
+    private GameObject _tripleShot, _tripleShotTorpedoes;
 
     [SerializeField]
     private GameObject _blackHole;
@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
 
     public int _ammo = 15;
+    public int _torpedoes = 0;
 
     public static Action onBlackHoleAction;
 
@@ -183,6 +184,32 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (torpedosArmed == true && _torpedoes > 0)
+            {
+                FireTorpedo();
+            }
+            else
+            {
+                _audioSource.clip = _outOfAmmoSound;
+                _audioSource.Play();
+            }
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (_invincibility == false)
+            {
+                _invincibility = true;
+            }
+            else
+            {
+                _invincibility = false;
+            }
+        }
+
         //if (Input.GetKeyDown(KeyCode.1)) maybe add an ammo order here?
 
         ColorChanger();
@@ -210,6 +237,35 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void FireTorpedo()
+    {
+        if (_tripleShotActive == true)
+        {
+            GameObject laser = Instantiate(_tripleShotTorpedoes, transform.position, Quaternion.identity);
+            Laser[] lasers = laser.GetComponentsInChildren<Laser>();
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].ArmTorpedo();
+            }
+            _torpedoes--;
+            _audioSource.clip = _laserSound;
+            _audioSource.Play();
+        }
+        else
+        {
+            Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity).GetComponent<Laser>().ArmTorpedo();
+            _torpedoes--;
+            _audioSource.clip = _laserSound;
+            _audioSource.Play();
+        }
+
+        if (_torpedoes == 0)
+        {
+            torpedosArmed = false;
+        }
+        _uiManager.UpdateTorpedo(_torpedoes);
+    }
+
     private void FireLaser()
     {
         if (_ammo > 0)
@@ -218,27 +274,19 @@ public class Player : MonoBehaviour
 
             if (_tripleShotActive == true)
             {
-                GameObject laser = Instantiate(_tripleShot, transform.position, Quaternion.identity);
-                if (torpedosArmed == true)
-                {
-                    laser.GetComponent<Laser>().ArmTorpedo();
-                }
-                _audioSource.Play();
-                _ammo--;
+
+                        GameObject laser = Instantiate(_tripleShot, transform.position, Quaternion.identity);
+                        _ammo--;
+                        _audioSource.clip = _laserSound;
+                        _audioSource.Play();
             }
             else
             {
-                GameObject laser = Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
-                if (torpedosArmed == true)
-                {
-                    laser.GetComponent<Laser>().ArmTorpedo();
-                }
-                _audioSource.Play();
-                _ammo--;
+                    _ = Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+                    _ammo--;
+                    _audioSource.clip = _laserSound;
+                    _audioSource.Play();
             }
-
-
-
             _uiManager.UpdateAmmo(_ammo);
         }
         else
@@ -259,6 +307,15 @@ public class Player : MonoBehaviour
         _ammo += 15;
         _audioSource.clip = _laserSound;
         _uiManager.UpdateAmmo(_ammo);
+    }
+
+    public void TorpedoPowerup()
+    {
+        _torpedoes += 12;
+        Debug.Log("Torpedoes = " + _torpedoes);
+        _audioSource.clip = _laserSound;
+        _uiManager.UpdateTorpedo(_torpedoes);
+        torpedosArmed = true;
     }
 
     void CalculateMovement()
@@ -435,12 +492,6 @@ public class Player : MonoBehaviour
             lastRunnerSpeedBoost++;
         }
     }
-
-    public void TorpedoPowerup()
-    {
-        torpedosArmed = true;
-    }
-
 
     IEnumerator SpeedBoostPowerDownRoutine()
     {
